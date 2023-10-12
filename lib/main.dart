@@ -1,131 +1,105 @@
-import 'dart:ffi';
-
+//套件包
+//import 放入 輸入
+//pubspec.yaml
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const FirstPage());
 }
-//靜態
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
 
-  // This widget is the root of your application.
+class FirstPage extends StatelessWidget {
+  const FirstPage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    return const MaterialApp(
+      home: loginPage(),
     );
   }
 }
-//動態
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
 
-
-  final String title;
+class loginPage extends StatefulWidget {
+  const loginPage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<loginPage> createState() => _loginPageState();
 }
-//列舉
-enum profileName {
-  name,
-  sender,
-  age,
-}
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  //是否初始化完畢
-  bool isInitializing = false;
-  Map<String,dynamic> profile = {};
-  //功能
-  void _incrementCounter() {
+
+class _loginPageState extends State<loginPage> {
+  int selectedIndex = 0; //所選的索引值
+  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const List<Widget> widgetOptions = <Widget>[
+    Text(
+      'Index 0: Home',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 1: Business',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 2: School',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 3: village',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 4: sunny',
+      style: optionStyle,
+    ),
+  ];
+  //底下的底部導航的項目
+  List<BottomNavigationBarItem> bottomBarItems = <BottomNavigationBarItem>[
+    const BottomNavigationBarItem(
+      icon: Icon(Icons.home),
+      label: 'Home',
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(Icons.business),
+      label: 'Business',
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(Icons.school),
+      label: 'School',
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(Icons.holiday_village),
+      label: 'village',
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(Icons.sunny),
+      label: 'sunny',
+    ),
+  ];
+
+  void onItemChange(int index) {
+    //setState loginPage畫面刷新
     setState(() {
-      _counter++;
+      selectedIndex = index;
     });
   }
-  //初始化
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getData();
 
-  }
-  //初始化取資料
-  getData(){
-    //拿資料 api
-    profile = {"name":"Tsai","sender":1,"age":27};
-    isInitializing = true;
-  }
-  getColumnVal(profileName columnName){
-    switch (columnName) {
-      case profileName.age:
-        return profile[profileName.name.name];
-      case profileName.sender:
-        return profile[profileName.sender.name];
-      case _:
-        return profile[profileName.age.name];
-    }
-  }
-  //
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-  }
-
-  //畫面建立
   @override
   Widget build(BuildContext context) {
+    //區域變數
+    double maxHeight = MediaQuery.of(context).size.height;
+    double maxWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+      appBar: AppBar(title: const Center(child: Text('登入頁面'))),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.grey,
+        child: Center(child: widgetOptions[selectedIndex]),
       ),
-      body: isInitializing ? CircularProgressIndicator():Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(getColumnVal(profileName.name)),
-            Text(profile[profileName.sender.name].toString()),
-            Text(profile[profileName.sender.name].toString()),
-            Text(profile[profileName.sender.name].toString()),
-            Text(profile[profileName.sender.name].toString()),
-            Text(profile[profileName.sender.name].toString()),
-            Text(profile[profileName.sender.name].toString()),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: selectedIndex,
+        selectedItemColor: Colors.black,
+        items: bottomBarItems,
+        onTap: onItemChange,
       ),
     );
-  }
-
-  @override
-  void deactivate() {
-    // TODO: implement deactivate
-    super.deactivate();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
   }
 }
