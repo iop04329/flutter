@@ -3,13 +3,14 @@
 //pubspec.yaml
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:tutorial/pages/firstPage.dart';
 
 void main() {
-  runApp(const FirstPage());
+  runApp(const MyApp());
 }
 
-class FirstPage extends StatelessWidget {
-  const FirstPage({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -154,6 +155,20 @@ class _loginPageState extends State<loginPage> {
               customCard(maxWid),
               customCard(maxWid),
               customCard(maxWid),
+              //手勢偵測 匿名函式 clean code 簡潔的程式 ()=> (){} context文本
+              GestureDetector(
+                onTap: () async {
+                  print('Start');
+                  //Navigator頁面管理 await 同步
+                  await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                    return firstPage(text: '恭喜進入首頁');
+                  })).then((value) {
+                    print(value);
+                  });
+                  print('Finish');
+                },
+                child: customCard(maxWid),
+              )
             ],
           ),
         );
