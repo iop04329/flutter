@@ -4,6 +4,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:tutorial/pages/firstPage.dart';
+import 'package:tutorial/pages/secondpage.dart';
+import 'package:tutorial/pages/thirdPage.dart';
+import 'package:tutorial/tool/pub.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +17,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      routes: routes, //註冊頁面
       home: loginPage(),
     );
   }
@@ -93,7 +97,7 @@ class _loginPageState extends State<loginPage> {
     return Container(
       margin: EdgeInsets.all(10),
       width: maxWid * 0.85,
-      height: 100,
+      height: 90,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10)),
         color: Colors.white,
@@ -145,33 +149,76 @@ class _loginPageState extends State<loginPage> {
         double maxWid = box.maxWidth;
         double maxht = box.maxHeight;
         return Container(
-          width: maxWid,
-          height: maxHeight,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              customCard(maxWid),
-              customCard(maxWid),
-              customCard(maxWid),
-              customCard(maxWid),
-              customCard(maxWid),
-              //手勢偵測 匿名函式 clean code 簡潔的程式 ()=> (){} context文本
-              GestureDetector(
-                onTap: () async {
-                  print('Start');
-                  //Navigator頁面管理 await 同步
-                  await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                    return firstPage(text: '恭喜進入首頁');
-                  })).then((value) {
-                    print(value);
-                  });
-                  print('Finish');
-                },
-                child: customCard(maxWid),
-              )
-            ],
-          ),
-        );
+            width: maxWid,
+            height: maxHeight,
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  customCard(maxWid),
+                  customCard(maxWid),
+                  GestureDetector(
+                    onTap: () async {
+                      print('Start');
+                      //Navigator頁面管理 await 同步
+                      await Navigator.of(context).pushNamed(RouteName.five).then((value) {
+                        print(value);
+                      });
+                      print('Finish');
+                    },
+                    child: customCard(maxWid),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      print('Start');
+                      //Navigator頁面管理 await 同步
+                      await Navigator.of(context).pushNamed(RouteName.second).then((value) {
+                        print(value);
+                      });
+                      print('Finish');
+                    },
+                    child: customCard(maxWid),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      print('Start');
+                      //Navigator頁面管理 await 同步
+                      await Navigator.of(context).pushNamed(RouteName.four).then((value) {
+                        print(value);
+                      });
+                      print('Finish');
+                    },
+                    child: customCard(maxWid),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      print('Start');
+                      //Navigator頁面管理 await 同步
+                      await Navigator.of(context).pushNamed(RouteName.second).then((value) {
+                        print(value);
+                      });
+                      print('Finish');
+                    },
+                    child: customCard(maxWid),
+                  ),
+                  //手勢偵測 匿名函式 clean code 簡潔的程式 ()=> (){} context文本
+                  GestureDetector(
+                    onTap: () async {
+                      print('Start');
+                      //Navigator頁面管理 await 同步
+                      await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                        return firstPage(text: '恭喜進入首頁');
+                      })).then((value) {
+                        print(value);
+                      });
+                      print('Finish');
+                    },
+                    child: customCard(maxWid),
+                  )
+                ],
+              ),
+            ));
       }),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,
