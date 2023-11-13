@@ -31,6 +31,12 @@ enum profileName {
   age,
 }
 
+Map userDataBase = {
+  'test1': '1234',
+  'test2': '0000',
+  'test3': '5555',
+  'test4': '7777',
+};
 //lesson 1 介紹
 //lesson 2 基礎語法
 //lesson 3 常用表達式
@@ -41,4 +47,5 @@ enum profileName {
 //lesson 7 導航Navigator用法 pop push 非同步用法 await future
 //網址:https://book.flutterchina.club/chapter2/flutter_router.html#_2-4-4-%E8%B7%AF%E7%94%B1%E4%BC%A0%E5%80%BC
 //lesson 8 導航註冊
-//lesson 9 狀態管理 share prefernce
+//lesson 9 textfield 畫面建立 controller 功能 
+//leeson 10 狀態管理 share prefernce
