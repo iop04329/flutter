@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:tutorial/pages/register.dart';
+import 'package:tutorial/tool/pub.dart';
 import 'package:tutorial/tool/pub.dart';
 
 class login extends StatefulWidget {
@@ -12,15 +14,7 @@ class login extends StatefulWidget {
 class _loginState extends State<login> {
   TextEditingController userController = TextEditingController();
   TextEditingController passWordController = TextEditingController();
-
-  showMsg(String msg) {
-    Fluttertoast.showToast(
-      msg: msg,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      fontSize: 20,
-    );
-  }
+  tool_api tool = tool_api();
 
   @override
   void dispose() {
@@ -85,17 +79,30 @@ class _loginState extends State<login> {
                       if (userDataBase.containsKey(userVal)) {
                         print('有這個使用者');
                         if (userDataBase[userVal] == passWordVal) {
-                          showMsg('登入成功');
+                          tool.showMsg('登入成功');
                           Navigator.of(context).pushNamed(RouteName.first);
                         } else {
-                          showMsg('密碼錯誤');
+                          tool.showMsg('密碼錯誤');
                         }
                       } else {
-                        showMsg('無此使用者');
+                        tool..showMsg('無此使用者');
                       }
                     },
                     child: Text('登入')),
-              )
+              ),
+              Center(
+                  child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) => const registerPage(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        '註冊',
+                        style: TextStyle(color: Colors.blue, fontSize: 20, decoration: TextDecoration.underline),
+                      )))
             ],
           ),
         ));

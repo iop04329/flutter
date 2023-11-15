@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tutorial/pages/fivePage.dart';
 import 'package:tutorial/pages/firstPage.dart';
 import 'package:tutorial/pages/fourPage.dart';
@@ -15,6 +16,7 @@ class RouteName {
   static const third = 'third';
   static const four = 'four';
   static const five = 'five';
+  static const register = 'register';
 }
 
 Map<String, WidgetBuilder> routes = {
@@ -23,6 +25,7 @@ Map<String, WidgetBuilder> routes = {
   RouteName.third: (_) => thirdPage(text: '第三頁'),
   RouteName.four: (_) => fourPage('第四頁'),
   RouteName.five: (_) => fivePage('第五頁'),
+  RouteName.register: (_) => fivePage('第五頁'),
 };
 
 enum profileName {
@@ -31,12 +34,37 @@ enum profileName {
   age,
 }
 
+enum registerName {
+  userId,
+  pswd,
+  mail,
+  phone,
+}
+
 Map userDataBase = {
   'test1': '1234',
   'test2': '0000',
   'test3': '5555',
   'test4': '7777',
 };
+
+class tool_api {
+  showMsg(String msg) {
+    Fluttertoast.showToast(
+      msg: msg,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      fontSize: 20,
+    );
+  }
+
+  bool isEmail(String input) {
+    // String emailRegex = r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$'; // 簡單的電子郵件地址正則表達式
+    String emailRegex = r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+([\w-]{2,}|[\w-]+\.[\w-]+)$';
+    RegExp regex = RegExp(emailRegex);
+    return regex.hasMatch(input);
+  }
+}
 //lesson 1 介紹
 //lesson 2 基礎語法
 //lesson 3 常用表達式
