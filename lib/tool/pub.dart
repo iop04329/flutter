@@ -81,4 +81,5 @@ class tool_api {
 //網址:https://book.flutterchina.club/chapter2/flutter_router.html#_2-4-4-%E8%B7%AF%E7%94%B1%E4%BC%A0%E5%80%BC
 //lesson 8 導航註冊
 //lesson 9 textfield 畫面建立 controller 功能 
-//leeson 10 狀態管理 share prefernce 
+//11/21 leeson 10 狀態管理 share prefernce login register 
+//lesson 11
