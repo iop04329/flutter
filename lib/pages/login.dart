@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial/pages/register.dart';
 import 'package:tutorial/tool/pub.dart';
 import 'package:tutorial/tool/pub.dart';
@@ -15,6 +16,12 @@ class _loginState extends State<login> {
   TextEditingController userController = TextEditingController();
   TextEditingController passWordController = TextEditingController();
   tool_api tool = tool_api();
+  bool isVisibile = false;
+
+  switchVisible() {
+    isVisibile = !isVisibile;
+    setState(() {});
+  }
 
   @override
   void dispose() {
@@ -58,35 +65,43 @@ class _loginState extends State<login> {
               ),
               SizedBox(height: 10),
               Container(
-                  child: TextField(
-                controller: passWordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Password',
-                ),
-              )),
+                child: TextField(
+                    controller: passWordController,
+                    obscureText: isVisibile,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Password',
+                      suffixIcon: IconButton(
+                          onPressed: switchVisible,
+                          icon: Icon(isVisibile ? Icons.visibility_off : Icons.visibility, size: 30, color: Colors.grey)), // 密碼鎖的圖示
+                    )),
+              ),
               SizedBox(height: 10),
               Container(
                 width: double.infinity,
                 height: 40,
                 child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       print(userController.text);
                       print(passWordController.text);
                       String userVal = userController.text;
                       String passWordVal = passWordController.text;
-                      if (userDataBase.containsKey(userVal)) {
-                        print('有這個使用者');
-                        if (userDataBase[userVal] == passWordVal) {
-                          tool.showMsg('登入成功');
-                          Navigator.of(context).pushNamed(RouteName.first);
-                        } else {
-                          tool.showMsg('密碼錯誤');
+                      final SharedPreferences prefs = await SharedPreferences.getInstance();
+                      List<String>? userIdList = prefs.getStringList(registerName.userId.name);
+                      List<String>? pswdList = prefs.getStringList(registerName.pswd.name);
+                      int Ind = -1;
+                      if (userIdList != null) {
+                        if (userIdList.contains(userVal)) {
+                          Ind = userIdList.indexOf(userVal);
+                          if (pswdList != null) {
+                            if (pswdList[Ind] == passWordVal) {
+                              tool.showMsg('登入成功');
+                              await Navigator.of(context).pushNamed(RouteName.front);
+                            }
+                          }
                         }
-                      } else {
-                        tool..showMsg('無此使用者');
                       }
+                      tool.showMsg('登入失敗');
                     },
                     child: Text('登入')),
               ),

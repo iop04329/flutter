@@ -15,6 +15,7 @@ class _registerPageState extends State<registerPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   tool_api tool = tool_api();
+  bool isVisibile = false;
 
   registerData(String key, String val) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -25,6 +26,51 @@ class _registerPageState extends State<registerPage> {
       dataList.add(val); // [user1,user2,....]
       prefs.setStringList(key, dataList);
     }
+  }
+
+  registerDatabyEnum(registerName key, String val) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? dataList = prefs.getStringList(key.name);
+    if (dataList == null) {
+      await prefs.setStringList(key.name, <String>[val]); //[user1]
+    } else {
+      dataList.add(val); // [user1,user2,....]
+      prefs.setStringList(key.name, dataList);
+    }
+  }
+
+  Future<bool> checkIsRegister(String userId, String mail) async {
+    //1.get email userId
+    //2.compare data
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? userIdList = prefs.getStringList(registerName.userId.name);
+    List<String>? mailList = prefs.getStringList(registerName.mail.name);
+    if (userIdList != null) {
+      if (userIdList.contains(userId)) {
+        return true;
+      }
+    }
+    if (mailList != null) {
+      if (mailList.contains(mail)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  getUserNumbers() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? dataList = prefs.getStringList(registerName.userId.name);
+    if (dataList == null) {
+      tool.showMsg('no User');
+    } else {
+      tool.showMsg('There is ${dataList.length} Users');
+    }
+  }
+
+  switchVisible() {
+    isVisibile = !isVisibile; // false true false true
+    setState(() {});
   }
 
   @override
@@ -87,10 +133,13 @@ class _registerPageState extends State<registerPage> {
               Container(
                   child: TextField(
                 controller: phoneController,
-                obscureText: true,
+                obscureText: isVisibile,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: '09xx',
+                  suffixIcon: IconButton(
+                      onPressed: switchVisible,
+                      icon: Icon(isVisibile ? Icons.visibility_off : Icons.visibility, size: 30, color: Colors.grey)), // 密碼鎖的圖示
                 ),
               )),
               SizedBox(height: 10),
@@ -116,8 +165,12 @@ class _registerPageState extends State<registerPage> {
                         tool.showMsg('請確保email格式正確');
                         return; //break
                       }
-                      if (phoneVal[0] != '0' && phoneVal[1] != '9' || phoneVal.length != 10) {
+                      if (phoneVal[0] != '0' && phoneVal[1] != '9' && phoneVal.length != 10) {
                         tool.showMsg('請確保phone格式正確');
+                        return; //break
+                      }
+                      if (await checkIsRegister(userVal, mailVal)) {
+                        tool.showMsg('已註冊');
                         return; //break
                       }
                       registerData(registerName.userId.name, userVal);
@@ -127,6 +180,12 @@ class _registerPageState extends State<registerPage> {
                       tool.showMsg('註冊成功');
                     },
                     child: Text('註冊')),
+              ),
+              SizedBox(height: 10),
+              Container(
+                width: double.infinity,
+                height: 40,
+                child: ElevatedButton(onPressed: getUserNumbers, child: Text('查看使用者數量')),
               ),
             ],
           ),

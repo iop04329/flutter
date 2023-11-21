@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:tutorial/pages/fivePage.dart';
-import 'package:tutorial/pages/firstPage.dart';
-import 'package:tutorial/pages/fourPage.dart';
-import 'package:tutorial/pages/secondPage.dart';
-import 'package:tutorial/pages/thirdPage.dart';
+import 'package:tutorial/old/fivePage.dart';
+import 'package:tutorial/old/firstPage.dart';
+import 'package:tutorial/old/fourPage.dart';
+import 'package:tutorial/old/secondPage.dart';
+import 'package:tutorial/old/thirdPage.dart';
+import 'package:tutorial/pages/front.dart';
+import 'package:tutorial/pages/register.dart';
 //自製套件
 //共用區域
 //列舉
 
 //路由管理
 class RouteName {
-  static const first = 'first';
-  static const second = 'second';
-  static const third = 'third';
-  static const four = 'four';
-  static const five = 'five';
-  static const register = 'register';
+  static const first = '/first';
+  static const second = '/second';
+  static const third = '/third';
+  static const four = '/four';
+  static const five = '/five';
+  static const register = '/register';
+  static const front = '/front';
 }
 
 Map<String, WidgetBuilder> routes = {
@@ -25,7 +28,8 @@ Map<String, WidgetBuilder> routes = {
   RouteName.third: (_) => thirdPage(text: '第三頁'),
   RouteName.four: (_) => fourPage('第四頁'),
   RouteName.five: (_) => fivePage('第五頁'),
-  RouteName.register: (_) => fivePage('第五頁'),
+  RouteName.register: (_) => registerPage(),
+  RouteName.front: (_) => frontPage(),
 };
 
 enum profileName {
@@ -41,6 +45,7 @@ enum registerName {
   phone,
 }
 
+//simple dataBase
 Map userDataBase = {
   'test1': '1234',
   'test2': '0000',
@@ -76,4 +81,4 @@ class tool_api {
 //網址:https://book.flutterchina.club/chapter2/flutter_router.html#_2-4-4-%E8%B7%AF%E7%94%B1%E4%BC%A0%E5%80%BC
 //lesson 8 導航註冊
 //lesson 9 textfield 畫面建立 controller 功能 
-//leeson 10 狀態管理 share prefernce
+//leeson 10 狀態管理 share prefernce 

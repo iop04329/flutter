@@ -2,9 +2,7 @@
 //import 放入 輸入
 //pubspec.yaml
 import 'package:flutter/material.dart';
-import 'package:tutorial/pages/firstPage.dart';
 import 'package:tutorial/pages/login.dart';
-import 'package:tutorial/pages/loginPage.dart';
 import 'package:tutorial/tool/pub.dart';
 
 void main() {
