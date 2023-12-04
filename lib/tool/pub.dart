@@ -122,3 +122,4 @@ class api_GetIt {
 // 1.全域參數
 // 2.不會被修改或初始化
 // 3.api token
+// 4. tutorial changeNotifier : https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html
