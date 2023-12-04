@@ -6,6 +6,7 @@ import 'package:tutorial/pages/login.dart';
 import 'package:tutorial/tool/pub.dart';
 
 void main() {
+  setup(); //singleTon
   runApp(const MyApp());
 }
 

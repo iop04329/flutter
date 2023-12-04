@@ -17,6 +17,7 @@ class _loginState extends State<login> {
   TextEditingController passWordController = TextEditingController();
   tool_api tool = tool_api();
   bool isVisibile = false;
+  api_GetIt api = locator<api_GetIt>();
 
   switchVisible() {
     isVisibile = !isVisibile;
@@ -96,6 +97,8 @@ class _loginState extends State<login> {
                           if (pswdList != null) {
                             if (pswdList[Ind] == passWordVal) {
                               tool.showMsg('登入成功');
+                              api.token = 'asdfopdg3d51f6g45fd468gsd4a645sa'; //GetIT
+                              Navigator.pop(context, 'hello world');
                               await Navigator.of(context).pushNamed(RouteName.front);
                             }
                           }

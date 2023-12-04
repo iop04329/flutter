@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
+import 'package:tutorial/tool/pub.dart';
 
 class frontPage extends StatefulWidget {
   const frontPage({super.key});
@@ -9,6 +10,13 @@ class frontPage extends StatefulWidget {
 }
 
 class _frontPageState extends State<frontPage> {
+  api_GetIt api = locator<api_GetIt>();
+  TextEditingController t1 = TextEditingController();
+  TextEditingController t2 = TextEditingController();
+  TextEditingController t3 = TextEditingController();
+  TextEditingController t4 = TextEditingController();
+  final totalModel totalNotifier = totalModel();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +32,7 @@ class _frontPageState extends State<frontPage> {
             children: [
               SizedBox(height: 100),
               Text(
-                '恭喜登入成功',
+                '恭喜登入成功 Token:${api.token}', //Getit
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 10),
@@ -43,6 +51,51 @@ class _frontPageState extends State<frontPage> {
                 width: double.infinity,
                 height: 40,
                 child: ElevatedButton(onPressed: () {}, child: Text('登入')),
+              ),
+              SizedBox(height: 20),
+              Row(children: [
+                Container(
+                  width: 80,
+                  height: 50,
+                  child: TextField(
+                      controller: t1,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'value',
+                      )),
+                ),
+                SizedBox(width: 20),
+                Icon(Icons.add),
+                SizedBox(width: 20),
+                Container(
+                  width: 80,
+                  height: 50,
+                  child: TextField(
+                      controller: t2,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'value',
+                      )),
+                ),
+                SizedBox(width: 10),
+                ElevatedButton(
+                    onPressed: () {
+                      tool_api tool = tool_api();
+                      double? v1 = double.tryParse(t1.text);
+                      double? v2 = double.tryParse(t2.text);
+                      if (v1 == null || v2 == null) {
+                        tool.showMsg('請確認輸入的參數');
+                        return;
+                      }
+                      totalNotifier.add(v1, v2);
+                    },
+                    child: Text('計算'))
+              ]),
+              ListenableBuilder(
+                listenable: totalNotifier,
+                builder: (BuildContext context, Widget? child) {
+                  return Text('結果為:${totalNotifier.addTotal}', style: TextStyle(fontSize: 20));
+                },
               ),
             ],
           ),

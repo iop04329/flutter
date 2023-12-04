@@ -38,6 +38,7 @@ dependencies:
   fluttertoast: ^8.2.4
   shared_preferences: ^2.2.2
   marquee: ^2.2.3
+  get_it: ^7.6.4
 
 dev_dependencies:
   flutter_test:
