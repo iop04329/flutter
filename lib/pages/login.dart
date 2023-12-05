@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,7 +18,8 @@ class _loginState extends State<login> {
   TextEditingController passWordController = TextEditingController();
   tool_api tool = tool_api();
   bool isVisibile = false;
-  api_GetIt api = locator<api_GetIt>();
+  Http_service api = locator<Http_service>();
+  Dio dio = Dio();
 
   switchVisible() {
     isVisibile = !isVisibile;
@@ -30,6 +32,30 @@ class _loginState extends State<login> {
     super.dispose();
     userController.dispose();
     passWordController.dispose();
+  }
+
+  login() async {
+    print(userController.text);
+    print(passWordController.text);
+    String userVal = userController.text;
+    String passWordVal = passWordController.text;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? userIdList = prefs.getStringList(registerName.userId.name);
+    List<String>? pswdList = prefs.getStringList(registerName.pswd.name);
+    int Ind = -1;
+    if (userIdList != null) {
+      if (userIdList.contains(userVal)) {
+        Ind = userIdList.indexOf(userVal);
+        if (pswdList != null) {
+          if (pswdList[Ind] == passWordVal) {
+            tool.showMsg('登入成功');
+            Navigator.pop(context, 'hello world');
+            await Navigator.of(context).pushNamed(RouteName.front);
+          }
+        }
+      }
+    }
+    tool.showMsg('登入失敗');
   }
 
   @override
@@ -83,28 +109,17 @@ class _loginState extends State<login> {
                 height: 40,
                 child: ElevatedButton(
                     onPressed: () async {
-                      print(userController.text);
-                      print(passWordController.text);
+                      //lesson 12
                       String userVal = userController.text;
                       String passWordVal = passWordController.text;
-                      final SharedPreferences prefs = await SharedPreferences.getInstance();
-                      List<String>? userIdList = prefs.getStringList(registerName.userId.name);
-                      List<String>? pswdList = prefs.getStringList(registerName.pswd.name);
-                      int Ind = -1;
-                      if (userIdList != null) {
-                        if (userIdList.contains(userVal)) {
-                          Ind = userIdList.indexOf(userVal);
-                          if (pswdList != null) {
-                            if (pswdList[Ind] == passWordVal) {
-                              tool.showMsg('登入成功');
-                              api.token = 'asdfopdg3d51f6g45fd468gsd4a645sa'; //GetIT
-                              Navigator.pop(context, 'hello world');
-                              await Navigator.of(context).pushNamed(RouteName.front);
-                            }
-                          }
-                        }
+                      Map<String, dynamic> res = await api.login(userVal, passWordVal);
+                      if (res['result'] == 'OK') {
+                        tool.showMsg('登入成功 ${res['jwtToken']}');
+                        Navigator.pop(context, 'hello world');
+                        await Navigator.of(context).pushNamed(RouteName.front);
+                      } else {
+                        tool.showMsg('登入失敗 ${res['jwtToken']}');
                       }
-                      tool.showMsg('登入失敗');
                     },
                     child: Text('登入')),
               ),

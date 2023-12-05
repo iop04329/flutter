@@ -16,6 +16,7 @@ class _registerPageState extends State<registerPage> {
   TextEditingController phoneController = TextEditingController();
   tool_api tool = tool_api();
   bool isVisibile = false;
+  Http_service api = locator<Http_service>();
 
   registerData(String key, String val) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();

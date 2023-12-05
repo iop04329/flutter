@@ -10,7 +10,6 @@ class frontPage extends StatefulWidget {
 }
 
 class _frontPageState extends State<frontPage> {
-  api_GetIt api = locator<api_GetIt>();
   TextEditingController t1 = TextEditingController();
   TextEditingController t2 = TextEditingController();
   TextEditingController t3 = TextEditingController();
@@ -32,7 +31,7 @@ class _frontPageState extends State<frontPage> {
             children: [
               SizedBox(height: 100),
               Text(
-                '恭喜登入成功 Token:${api.token}', //Getit
+                '恭喜登入成功 Token:', //Getit
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 10),

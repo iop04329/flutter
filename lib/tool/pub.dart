@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tutorial/old/fivePage.dart';
@@ -12,7 +13,7 @@ import 'package:get_it/get_it.dart';
 //GetIt 註冊單例
 final locator = GetIt.instance;
 void setup() {
-  locator.registerSingleton<api_GetIt>(api_GetIt());
+  locator.registerSingleton<Http_service>(Http_service());
 }
 
 //changeNotifier
@@ -100,9 +101,44 @@ class tool_api {
   }
 }
 
-class api_GetIt {
+//lesson 12
+class Http_service {
+  final dio = Dio();
   String token = '';
-  callMainPage() {}
+  Http_service() {
+    dio.options.baseUrl = 'https://b1ec-125-230-177-164.ngrok-free.app';
+  }
+
+  setToken(String token) {
+    dio.options.headers["Authorization"] = "Bearer $token";
+  }
+
+  setFakeToken(String token) {
+    this.token = token;
+  }
+
+  Future<Map<String, dynamic>> login(String account, String password) async {
+    FormData params = FormData.fromMap({
+      'account': account,
+      'password': password,
+    });
+    Response response = await dio.post('/getToken', data: params);
+    Map<String, dynamic> result = response.data;
+    if (result['result'] == 'OK') {
+      setFakeToken(result['jwtToken']);
+    }
+    return result;
+  }
+
+  Future<Response> login2(String account, String password) async {
+    FormData params = FormData.fromMap({
+      'account': account,
+      'password': password,
+    });
+    Response response = await dio.postUri(Uri(host: 'https://b1ec-125-230-177-164.ngrok-free.app', path: '/getToken'), data: params);
+
+    return response;
+  }
 }
 
 //lesson 1 介紹
@@ -123,3 +159,5 @@ class api_GetIt {
 // 2.不會被修改或初始化
 // 3.api token
 // 4. tutorial changeNotifier : https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html
+//lesson 12 dio(Http) try catch(異常流程)
+//lesson 13 valueNotifier
