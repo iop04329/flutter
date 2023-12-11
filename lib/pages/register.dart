@@ -179,6 +179,7 @@ class _registerPageState extends State<registerPage> {
                       registerData(registerName.mail.name, mailVal);
                       registerData(registerName.phone.name, phoneVal);
                       tool.showMsg('註冊成功');
+                      Navigator.of(context).pop();
                     },
                     child: Text('註冊')),
               ),

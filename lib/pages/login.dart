@@ -58,6 +58,20 @@ class _loginState extends State<login> {
     tool.showMsg('登入失敗');
   }
 
+  login_api() async {
+    //lesson 12
+    String userVal = userController.text;
+    String passWordVal = passWordController.text;
+    Map<String, dynamic> res = await api.login(userVal, passWordVal);
+    if (res['result'] == 'OK') {
+      tool.showMsg('登入成功 ${res['jwtToken']}');
+      Navigator.pop(context, 'hello world');
+      await Navigator.of(context).pushNamed(RouteName.front);
+    } else {
+      tool.showMsg('登入失敗 ${res['jwtToken']}');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     //account
@@ -107,21 +121,7 @@ class _loginState extends State<login> {
               Container(
                 width: double.infinity,
                 height: 40,
-                child: ElevatedButton(
-                    onPressed: () async {
-                      //lesson 12
-                      String userVal = userController.text;
-                      String passWordVal = passWordController.text;
-                      Map<String, dynamic> res = await api.login(userVal, passWordVal);
-                      if (res['result'] == 'OK') {
-                        tool.showMsg('登入成功 ${res['jwtToken']}');
-                        Navigator.pop(context, 'hello world');
-                        await Navigator.of(context).pushNamed(RouteName.front);
-                      } else {
-                        tool.showMsg('登入失敗 ${res['jwtToken']}');
-                      }
-                    },
-                    child: Text('登入')),
+                child: ElevatedButton(onPressed: () => login(), child: Text('登入')),
               ),
               Center(
                   child: GestureDetector(
