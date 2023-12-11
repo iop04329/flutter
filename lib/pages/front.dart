@@ -15,14 +15,18 @@ class _frontPageState extends State<frontPage> {
   TextEditingController t3 = TextEditingController();
   TextEditingController t4 = TextEditingController();
   final totalModel totalNotifier = totalModel();
+  final ValueNotifier<double> totalValNotifier = ValueNotifier(0);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('首頁')),
+        appBar: AppBar(
+          title: Text('首頁'),
+          centerTitle: false,
+        ),
         body: Container(
           //expanded元件
-          padding: EdgeInsets.only(left: 50, right: 50),
+          padding: EdgeInsets.only(left: 20, right: 20),
           width: double.infinity,
           height: double.infinity,
           color: Colors.white,
@@ -94,6 +98,54 @@ class _frontPageState extends State<frontPage> {
                 listenable: totalNotifier,
                 builder: (BuildContext context, Widget? child) {
                   return Text('結果為:${totalNotifier.addTotal}', style: TextStyle(fontSize: 20));
+                },
+              ),
+              //valueNotier
+              Row(children: [
+                Container(
+                  width: 80,
+                  height: 50,
+                  child: TextField(
+                      controller: t3,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'value',
+                      )),
+                ),
+                SizedBox(width: 20),
+                Icon(Icons.add),
+                SizedBox(width: 20),
+                Container(
+                  width: 80,
+                  height: 50,
+                  child: TextField(
+                      controller: t4,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'value',
+                      )),
+                ),
+                SizedBox(width: 10),
+                ElevatedButton(
+                    onPressed: () {
+                      tool_api tool = tool_api();
+                      double? v3 = double.tryParse(t3.text);
+                      double? v4 = double.tryParse(t4.text);
+                      if (v3 == null || v4 == null) {
+                        tool.showMsg('請確認輸入的參數');
+                        return;
+                      }
+                      totalValNotifier.value = v3 + v4;
+                    },
+                    child: Text('計算'))
+              ]),
+              ValueListenableBuilder<double>(
+                valueListenable: totalValNotifier,
+                builder: (BuildContext context, double value, Widget? child) {
+                  return Text(
+                    '結果為:${totalValNotifier.value}',
+                    style: const TextStyle(fontSize: 24),
+                  );
                 },
               ),
             ],

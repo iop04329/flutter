@@ -37,6 +37,8 @@ class _loginState extends State<login> {
   login() async {
     print(userController.text);
     print(passWordController.text);
+    userController.text = 'tsai';
+    passWordController.text = '0000';
     String userVal = userController.text;
     String passWordVal = passWordController.text;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -49,7 +51,7 @@ class _loginState extends State<login> {
         if (pswdList != null) {
           if (pswdList[Ind] == passWordVal) {
             tool.showMsg('登入成功');
-            Navigator.pop(context, 'hello world');
+            // Navigator.pop(context, 'hello world');
             await Navigator.of(context).pushNamed(RouteName.front);
           }
         }
@@ -121,7 +123,10 @@ class _loginState extends State<login> {
               Container(
                 width: double.infinity,
                 height: 40,
-                child: ElevatedButton(onPressed: () => login(), child: Text('登入')),
+                child: ElevatedButton(
+                  onPressed: () => login(),
+                  child: Text('登入', style: TextStyle(color: Colors.white)),
+                ),
               ),
               Center(
                   child: GestureDetector(

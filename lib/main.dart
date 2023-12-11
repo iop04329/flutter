@@ -18,6 +18,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       routes: routes, //註冊頁面
       home: login(),
+      theme: ThemeData(
+          appBarTheme: AppBarTheme(color: Colors.grey),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0), // 设置按钮边框的弧度为5
+                  )))),
     );
   }
 }
