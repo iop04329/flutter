@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       routes: routes, //註冊頁面
       home: login(),
       theme: ThemeData(
-          appBarTheme: AppBarTheme(color: Colors.grey),
+          appBarTheme: AppBarTheme(color: Colors.transparent),
           elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
