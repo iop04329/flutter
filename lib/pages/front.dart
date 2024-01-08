@@ -17,6 +17,20 @@ class _frontPageState extends State<frontPage> {
   TextEditingController t4 = TextEditingController();
   final totalModel totalNotifier = totalModel();
   final ValueNotifier<double> totalValNotifier = ValueNotifier(0);
+  double start = 0.0;
+  double end = 0.25;
+
+  onTapLoading() {
+    if (end == 1) {
+      start = 0;
+      end = 0;
+      setState(() {});
+      return;
+    }
+    start = end;
+    end += 0.25;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +48,6 @@ class _frontPageState extends State<frontPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 100),
             Text(
               '恭喜登入成功 Token:', //Getit
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
@@ -167,7 +180,28 @@ class _frontPageState extends State<frontPage> {
                 width: 50,
                 decoration: BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
               ),
-            )
+            ),
+            TweenAnimationBuilder<double>(
+                tween: Tween<double>(begin: start, end: end),
+                duration: const Duration(milliseconds: 500),
+                builder: (context, value, _) => Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(color: Color(0xFFA6C2FA), shape: BoxShape.circle),
+                          child: CircularProgressIndicator(
+                            color: Color(0xFFC8D0D4),
+                            value: value,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: onTapLoading,
+                          child: Icon(Icons.chevron_right, size: 30),
+                        )
+                      ],
+                    ))
           ],
         ),
       ),
